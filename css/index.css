@@ -1,0 +1,34 @@
+div.tree div.node div.node
+{
+	/*Hidden by default*/
+	display: none;
+	
+	margin-left: 30px;
+	padding-left: 10px;
+	border-left: 1px solid #CCC;
+}
+
+.node-label
+{
+	cursor: pointer;
+}
+
+p.node-label
+{
+	margin-bottom: 0px;
+}
+
+p.node-label:not(:first-child)
+{
+	margin-top: 10px;
+}
+
+p.node-label:before
+{
+	content: '@ ';
+}
+
+div.node.opened > p.node-label:before
+{
+	content: '< ';
+}
