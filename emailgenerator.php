@@ -128,6 +128,11 @@ class EmailGenerator extends Module
 
 	public static function listEmailTemplates()
 	{
+		static $templates = null;
+
+		if ($templates !== null)
+			return $templates;
+
 		$templates = array('core' => array(), 'modules' => array());
 
 		if(is_dir(dirname(__FILE__).'/templates/core'))
@@ -179,8 +184,19 @@ class EmailGenerator extends Module
 		);
 	}
 
+	public static function loadTranslatools()
+	{
+		if (!class_exists('Translatools'))
+		{
+			$ttPath = _PS_MODULE_DIR_.'translatools/translatools.php';
+			require_once $ttPath;
+		}
+	}
+
 	public function getTranslationsAction()
 	{
+		self::loadTranslatools();
+
 		$iso_code = Tools::getValue('language');
 
 		if (!class_exists('Translatools'))
@@ -208,14 +224,10 @@ class EmailGenerator extends Module
 
 	public function postTranslationsAction()
 	{
+		self::loadTranslatools();
+
 		$iso_code = Tools::getValue('language');
 		$ttPath = _PS_MODULE_DIR_.'translatools/translatools.php';
-
-		if (!class_exists('Translatools'))
-		{
-			$ttPath = _PS_MODULE_DIR_.'translatools/translatools.php';
-			require_once $ttPath;
-		}
 		
 		$extractor = Translatools::getNewTranslationsExtractor($iso_code);
 		foreach (Tools::getValue('translations') as $file => $data)
@@ -229,5 +241,44 @@ class EmailGenerator extends Module
 		}
 		
 		return $this->getTranslationsAction();
+	}
+
+	public function postGenerateAction()
+	{
+		$templates = self::listEmailTemplates();
+
+		foreach (Language::getLanguages() as $l)
+		{
+			$language = $l['iso_code'];
+
+			foreach ($templates['core'] as $file)
+			{
+				$target_path = _PS_ROOT_DIR_.'/mails/'.$language.'/'.basename($file['path'], '.php');
+				$this->generateEmail($file['path'], $target_path, $language);
+			}
+			foreach ($templates['modules'] as $module => $files)
+			{
+				foreach ($files as $file)
+				{
+					$target_path = _PS_MODULE_DIR_.$module.'/mails/'.$language.'/'.basename($file['path'], '.php');
+					$this->generateEmail($file['path'], $target_path, $language);
+				}
+			}
+		}
+
+		$this->template = 'index';
+		return $this->getIndexAction();
+	}
+
+	public function generateEmail($template, $output_basename, $language)
+	{
+		$template_url = Tools::getShopDomain(true).__PS_BASE_URI__
+		.'modules/emailgenerator/templates/viewer.php?template='.urlencode($template)
+		.'&language='.$language;
+
+		$html = file_get_contents($template_url);
+		die($html);
+
+		ddd(func_get_args());
 	}
 }

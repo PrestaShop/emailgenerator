@@ -2,7 +2,7 @@
 <script src='/modules/emailgenerator/js/tree.js'></script>
 
 {function templateActions template=[]}
-	<a target='_blank' href="/modules/emailgenerator/templates/viewer.php?template={$template.path}">Preview</a>
+	<a target='_blank' href="/modules/emailgenerator/templates/viewer.php?template={$template.path}&amp;preview">Preview</a>
 {/function}
 
 <div class="panel">
@@ -30,6 +30,11 @@
 			{/foreach}
 		</div>
 	</div>
+	<BR/>
+	<form method="POST">
+		{$stay_here}
+		<button name="action" value="generate" class="btn btn-default">Generate all E-mails</button>
+	</form>
 </div>
 
 <div class="panel">
