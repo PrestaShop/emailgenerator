@@ -3,6 +3,9 @@
 if (!defined('_PS_VERSION_'))
 	exit;
 
+require_once dirname(__FILE__).'/vendor/cssin/cssin.php';
+require_once dirname(__FILE__).'/vendor/cssin/vendor/simple_html_dom/simple_html_dom.php';
+require_once dirname(__FILE__).'/vendor/html_to_text/Html2Text.php';
 
 class EmailGenerator extends Module
 {
@@ -270,15 +273,64 @@ class EmailGenerator extends Module
 		return $this->getIndexAction();
 	}
 
+	public function textify($html)
+    {
+        $html      = str_get_html($html);
+        foreach($html->find("//[data-html-only='1']") as $kill)
+        {
+                $kill->outertext = "";
+        }
+        $converter = new Html2Text((string)$html);
+
+        $converter->search[]  = "#</p>#";
+        $converter->replace[] = "\n";
+
+        $txt = $converter->get_text();
+
+        $txt = preg_replace('/^\s+/m', "\n", $txt);
+        $txt = preg_replace_callback('/\{\w+\}/', function($m){
+                return strtolower($m[0]);
+        }, $txt);
+
+        // Html2Text will treat links as relative to the current host. We don't want that!
+        // (because of links like <a href='{shop_url}'></a>)
+        if(!empty($_SERVER['HTTP_HOST']))
+        {
+                $txt = preg_replace('#\w+://'.$_SERVER['HTTP_HOST'].'/#', '', $txt);
+        }
+
+        return $txt;
+    }
+
 	public function generateEmail($template, $output_basename, $language)
 	{
+		static $cssin;
+
+		if (!$cssin)
+		{
+			$cssin = new CSSIN();
+		}
+
 		$template_url = Tools::getShopDomain(true).__PS_BASE_URI__
 		.'modules/emailgenerator/templates/viewer.php?template='.urlencode($template)
 		.'&language='.$language;
 
-		$html = file_get_contents($template_url);
-		die($html);
+		$html = $cssin->inlineCSS($template_url);
+		$text = $this->textify($html);
 
-		ddd(func_get_args());
+		$write = array(
+			$output_basename.'.txt' => $text,
+			$output_basename.'.html' => $html
+		);
+
+		foreach ($write as $path => $data)
+		{
+			$dir = dirname($path);
+			if (!is_dir($dir))
+			{
+				mkdir($dir, 0777, true);
+			}
+			file_put_contents($path, $data);
+		}
 	}
 }
