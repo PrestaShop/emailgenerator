@@ -59,64 +59,7 @@ class EmailGenerator extends Module
 
 	public function getContent()
 	{
-		$actionName = Tools::getValue('action');
-
-		if ($actionName)
-		{
-			$method = strtolower($_SERVER['REQUEST_METHOD']);
-			$action = $method.ucfirst($actionName).'Action';
-			$this->template = $actionName;
-		}
-		else
-		{
-			$actionName = 'index';
-			$action = 'getIndexAction';
-			$this->template = 'index';
-		}
-
-		$data = array();
-		if (is_callable(array($this, $action)))
-		{
-			$values = $this->$action();
-			if (is_array($values))
-				$data = $values;
-		}
-		else
-		{
-			$data['error'] = 'Action not found: '.$actionName;
-			$this->template = 'error';
-		}
-
-		$data = array_merge($this->getDefaultViewParameters(), $data);
-
-		$this->context->smarty->assign($data);
-		return $this->context->smarty->fetch(
-			dirname(__FILE__).'/views/templates/admin/'.$this->template.'.tpl'
-		);
-	}
-
-	public function getDefaultViewParameters()
-	{
-		$hidden = array(
-			'token' => Tools::getValue('token'),
-			'configure' => $this->name,
-			'controller' => 'AdminModules'
-		);
-
-		$inputs = array();
-		$params = array();
-		foreach ($hidden as $name => $value)
-		{
-			$inputs[] = "<input type='hidden' name='$name' value='$value'>";
-			$params[] = urlencode($name).'='.urlencode($value);
-		}
-		$stay_here = implode("\n", $inputs);
-		$url = '?'.implode('&', $params);
-
-		return array(
-			'stay_here' => $stay_here,
-			'url' => $url
-		);
+		Tools::redirectAdmin($this->context->link->getAdminLink('AdminEmailGenerator'));
 	}
 
 	public static function humanizeString($str)
@@ -178,72 +121,59 @@ class EmailGenerator extends Module
 		return $templates;
 	}
 
-	public function getIndexAction()
+	public function quote($str)
 	{
-		$templates = self::listEmailTemplates();
-		return array(
-			'templates' => $templates,
-			'languages' => Language::getLanguages()
-		);
+		return '\''.str_replace("\n", '', preg_replace('/\\\*\'/', '\\\'', $str)).'\'';
 	}
 
-	public static function loadTranslatools()
+	public function dictionaryToArray($name, $data, $global=true)
 	{
-		if (!class_exists('Translatools'))
-		{
-			$ttPath = _PS_MODULE_DIR_.'translatools/translatools.php';
-			require_once $ttPath;
-		}
+		$str = "<?php\n\n";
+		if ($global)
+			$str .= 'global $'.$name.";\n";
+		$str .= '$'.$name." = array();\n\n";
+
+		foreach ($data as $key => $value)
+			if (trim($value) != '')
+				$str .= '$'.$name.'['.$this->quote($key).'] = '.$this->quote($value).";\n";
+
+		$str .= "\n\nreturn ".'$'.$name.";\n";
+
+		return $str;
 	}
 
-	public function getTranslationsAction()
+	public function writeTranslations($data)
 	{
-		self::loadTranslatools();
-
-		$iso_code = Tools::getValue('language');
-
-		if (!class_exists('Translatools'))
+		foreach ($data as $relFilePath => $newTranslations)
 		{
-			$ttPath = _PS_MODULE_DIR_.'translatools/translatools.php';
-			require_once $ttPath;
+			if (($absPath = $this->isValidTranslationFilePath($relFilePath)) !== false)
+			{
+				$currentTranslations = $this->getTranslations($absPath);
+				$translations = array_merge($currentTranslations, $newTranslations);
+				$phpArray = $this->dictionaryToArray('_LANGMAIL', $translations);
+				$dir = dirname($absPath);
+				if (!is_dir($dir))
+					if (!@mkdir($dir, 0777, true))
+						return false;
+				$fh = fopen($absPath, 'w');
+				if (!$fh)
+					return false;
+				if (flock($fh, LOCK_EX))
+				{
+					fwrite($fh, $phpArray);
+					fflush($fh);
+					flock($fh, LOCK_UN);
+					fclose($fh);
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+				return false;
 		}
-
-		$subjectsExtractor = Translatools::getNewTranslationsExtractor($iso_code);
-		$subjectsExtractor->extractMailSubjectsStrings();
-		$subjectsExtractor->fill();
-
-		$contentExtractor = Translatools::getNewTranslationsExtractor($iso_code);
-		$contentExtractor->extractMailContentStrings();
-		$contentExtractor->fill();
-
-		return array(
-			'language' => $iso_code,
-			'subjects' => $subjectsExtractor->getFiles(),
-			'content' => $contentExtractor->getFiles()
-		);
-
-		return array();
-	}
-
-	public function postTranslationsAction()
-	{
-		self::loadTranslatools();
-
-		$iso_code = Tools::getValue('language');
-		$ttPath = _PS_MODULE_DIR_.'translatools/translatools.php';
-		
-		$extractor = Translatools::getNewTranslationsExtractor($iso_code);
-		foreach (Tools::getValue('translations') as $file => $data)
-		{
-			$path = _PS_ROOT_DIR_.'/'.str_replace('(lc)', $iso_code, $file);
-			$contents = $extractor->dictionaryToArray('_LANGMAIL', $data);
-			$dir = dirname($path);
-			if (!is_dir($dir))
-				mkdir($dir, 0777, true);
-			file_put_contents($path, $contents);
-		}
-		
-		return $this->getTranslationsAction();
+		return true;
 	}
 
 	public function postGenerateAction()
@@ -332,5 +262,196 @@ class EmailGenerator extends Module
 			}
 			file_put_contents($path, $data);
 		}
+	}
+
+	public function currentLanguageCode()
+	{
+		if (($languageCode = Tools::getValue('languageCode')) && preg_match('/[a-z]{2}/', $languageCode))
+			return $languageCode;
+		else
+			return $this->context->language->iso_code;
+	}
+
+	public function getTranslations($path)
+	{
+		if (file_exists($path))
+		{
+			global $_LANGMAIL;
+			$old = $_LANGMAIL;
+
+			include($path);
+			$dictionary = $_LANGMAIL;
+			$_LANGMAIL = $old;
+			return $dictionary;	
+		}
+		else
+			return array();
+	}
+
+	public function getBodyTranslations($languageCode)
+	{
+		$path = dirname(__FILE__).'/templates_translations/'.$languageCode.'/lang_content.php';
+		return $this->getTranslations($path);
+	}
+
+	public function getSubjectTranslations($languageCode)
+	{
+		$path = _PS_MAIL_DIR_.$languageCode.'/lang.php';
+		return $this->getTranslations($path);
+	}
+
+	public static function unquote($string)
+	{
+		return preg_replace(array('/(?:^[\'"]|[\'"]$)/', '/\\\+([\'"])/'), array('', '\1'), $string);
+	}
+
+	public static function recListPSPHPFiles($dir)
+	{
+		foreach (array(_PS_CACHE_DIR_, _PS_TOOL_DIR_) as $skip)
+		{
+			if (preg_replace('#/$#', '', $skip) === preg_replace('#/$#', '', $dir))
+			{
+				return array();
+			}
+		}
+
+		$paths = array();
+
+		if (is_dir($dir))
+		{
+			foreach (scandir($dir) as $entry)
+			{
+				if (!preg_match('/^\./', basename($entry)))
+				{
+					$path = $dir.'/'.$entry;
+					if (is_dir($path))
+						$paths = array_merge($paths, self::recListPSPHPFiles($path));
+					else if (preg_match('/\.php$/', $entry))
+						$paths[] = $path;
+				}
+			}
+		}
+
+		return $paths;
+	}
+
+	public function extractEmailStrings($template, $language)
+	{
+		$id = 0;
+
+		require_once dirname(__FILE__).'/vendor/simple_parsers/classes/SimplePHPFunctionCallParser.php';
+		$data = file_get_contents(dirname(__FILE__).'/'.$template);
+		$parser = new SimplePHPFunctionCallParser('t');
+		
+		$body_strings = $parser->parse($data);
+		$body_translations = $this->getBodyTranslations($language);
+
+		$body = array();
+		foreach($body_strings as $str)
+		{
+			$str = self::unquote($str[0]);
+			if (isset($body_translations[$str]))
+				$translation = $body_translations[$str];
+			else
+				$translation = '';
+
+			$body[$str] = array(
+				'translation' => $translation,
+				'id' => ++$id,
+				'file' => 0
+			);
+		}
+
+
+		$subject_strings = array();
+		$potential_subject_strings = array();
+
+		foreach (self::recListPSPHPFiles(_PS_ROOT_DIR_) as $path)
+		{
+			$sendParser = new SimplePHPFunctionCallParser('Mail\s*::\s*Send');
+			$sends = $sendParser->parse(file_get_contents($path));
+			if (count($sends) > 0)
+			{
+				foreach ($sends as $send)
+				{
+					if (!isset($send[1]) || !isset($send[2]))
+						continue;
+
+					$templateName = self::unquote($send[1]);
+					if ($templateName === basename($template, '.php'))
+					{
+						$subjectParser = new SimplePHPFunctionCallParser('l');
+						$subjects = $subjectParser->parse($send[2]);
+						if (count($subjects) === 1)
+							$subject_strings[] = self::unquote($subjects[0][0]);
+					}
+					else if(!preg_match('/^\w/', $templateName))
+					{
+						$subjectParser = new SimplePHPFunctionCallParser('l');
+						$subjects = $subjectParser->parse($send[2]);
+						if (count($subjects) === 1)
+							$potential_subject_strings[] = self::unquote($subjects[0][0]);
+					}
+				}
+			}
+		}
+
+		$subject_translations = $this->getSubjectTranslations($language);
+		
+		$subjects = array();
+		foreach($subject_strings as $str)
+		{
+			if (isset($subject_translations[$str]))
+				$translation = $subject_translations[$str];
+			else
+				$translation = '';
+
+			$subjects[$str] = array(
+				'translation' => $translation, 
+				'id' => ++$id,
+				'file' => 1
+			);
+		}
+
+		$potential_subjects = array();
+		foreach($potential_subject_strings as $str)
+		{
+			if (isset($subject_translations[$str]))
+				$translation = $subject_translations[$str];
+			else
+				$translation = '';
+
+			$potential_subjects[$str] = array(
+				'translation' => $translation, 
+				'id' => ++$id,
+				'file' => 1
+			);
+		}
+
+		return array(
+			'body' => $body,
+			'subjects' => $subjects,
+			'potential_subjects' => $potential_subjects,
+			'files' => array(
+				0 => 'modules/emailgenerator/templates_translations/'.$language.'/lang_content.php',
+				1 => 'mails/'.$language.'/lang.php'
+			)
+		);
+	}
+
+	public function isValidTemplatePath($template)
+	{
+		return preg_match('#^templates/(?:core|modules/[^/]+)/[^/]+\.php$#', $template)
+			&& file_exists(dirname(__FILE__).'/'.$template);
+	}
+
+	public function isValidTranslationFilePath($path)
+	{
+		$absPath = realpath(_PS_ROOT_DIR_.'/'.$path);
+		$path = substr($absPath, strlen(_PS_ROOT_DIR_)+1);
+		return 
+			preg_match('#^(?:mails/[a-z]{2}/lang\.php|modules/emailgenerator/templates_translations/[a-z]{2}/lang_content\.php)$#', $path)
+			? $absPath
+			: false;
 	}
 }
