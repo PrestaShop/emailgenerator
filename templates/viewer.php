@@ -15,7 +15,7 @@ function t($str)
 
 	if (!is_array($dictionary))
 	{
-		$language = isset($_GET['language']) ? $_GET['language'] : 'en';
+		$language = isset($_GET['languageCode']) ? $_GET['languageCode'] : 'en';
 		$dictionary_path = dirname(__FILE__).'/../templates_translations/'.$language.'/lang_content.php';
 		if (file_exists($dictionary_path))
 			$dictionary = include($dictionary_path);

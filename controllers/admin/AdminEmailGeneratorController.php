@@ -77,6 +77,8 @@ class AdminEmailGeneratorController extends ModuleAdminController
 						}
 					}
 					$ok = $this->module->writeTranslations($data);
+					$ok = $ok && $this->module->generateEmail($template, $languageCode);
+					if (!$ok)die("Oops");
 				}
 
 				Tools::redirectAdmin($url);
@@ -89,7 +91,9 @@ class AdminEmailGeneratorController extends ModuleAdminController
 				'template_name' => $this->module->humanizeString(basename($template, '.php')),
 				'strings' => $strings,
 				'token' => Tools::getValue('token'),
+				'languages' => Language::getLanguages(),
 				'languageCode' => $languageCode,
+				'preview_url' => $this->module->getPreviewURL($template, $languageCode)
 			));
 		}
 	}

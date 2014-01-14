@@ -232,7 +232,7 @@ class EmailGenerator extends Module
         return $txt;
     }
 
-	public function generateEmail($template, $output_basename, $language)
+	public function generateEmail($template, $languageCode)
 	{
 		static $cssin;
 
@@ -241,9 +241,11 @@ class EmailGenerator extends Module
 			$cssin = new CSSIN();
 		}
 
-		$template_url = Tools::getShopDomain(true).__PS_BASE_URI__
-		.'modules/emailgenerator/templates/viewer.php?template='.urlencode($template)
-		.'&language='.$language;
+		$template_url = $this->getPreviewURL($template, $languageCode);
+
+		$output_basename = $this->getBaseOutputName($template, $languageCode);
+		if ($output_basename === false)
+			return false;
 
 		$html = $cssin->inlineCSS($template_url);
 		$text = $this->textify($html);
@@ -258,10 +260,20 @@ class EmailGenerator extends Module
 			$dir = dirname($path);
 			if (!is_dir($dir))
 			{
-				mkdir($dir, 0777, true);
+				if(!@mkdir($dir, 0777, true))
+					return false;
 			}
-			file_put_contents($path, $data);
+			if(!@file_put_contents($path, $data))
+				return false;
 		}
+		return true;
+	}
+
+	public function getPreviewURL($template, $languageCode)
+	{
+		return Tools::getShopDomain(true).__PS_BASE_URI__
+		.'modules/emailgenerator/templates/viewer.php?template='.urlencode($template)
+		.'&languageCode='.$languageCode;
 	}
 
 	public function currentLanguageCode()
@@ -443,6 +455,17 @@ class EmailGenerator extends Module
 	{
 		return preg_match('#^templates/(?:core|modules/[^/]+)/[^/]+\.php$#', $template)
 			&& file_exists(dirname(__FILE__).'/'.$template);
+	}
+
+	public function getBaseOutputName($template, $languageCode)
+	{
+		$m = array();
+		if (preg_match('#^templates/core/[^/]+\.php$#', $template))
+			return _PS_ROOT_DIR_.'/mails/'.$languageCode.'/'.basename($template, '.php');
+		else if (preg_match('#^templates/modules/([^/]+)/(?:[^/]+)\.php$#', $template, $m))
+			return _PS_MODULE_DIR_.$m[1].'/mails/'.$languageCode.'/'.basename($template, '.php');
+		else
+			return false;
 	}
 
 	public function isValidTranslationFilePath($path)
