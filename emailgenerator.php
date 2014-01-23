@@ -245,7 +245,7 @@ class EmailGenerator extends Module
 
 		$output_basename = $this->getBaseOutputName($template, $languageCode);
 		if ($output_basename === false)
-			return false;
+			return $this->l('Template name is invalid.');
 
 		$html = $cssin->inlineCSS($template_url);
 		$text = $this->textify($html);
@@ -261,10 +261,10 @@ class EmailGenerator extends Module
 			if (!is_dir($dir))
 			{
 				if(!@mkdir($dir, 0777, true))
-					return false;
+					return $this->l('Could not create directory to write email to.');
 			}
 			if(!@file_put_contents($path, $data))
-				return false;
+				return $this->l('Could not write email file.');
 		}
 		return true;
 	}

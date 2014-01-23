@@ -38,15 +38,36 @@ class AdminEmailGeneratorController extends ModuleAdminController
 		$this->addJS('/modules/emailgenerator/js/tree.js');
 
 		$templates = EmailGenerator::listEmailTemplates();
+		$languages = Language::getLanguages();
+
+		$toBuild = array();
+
+		foreach ($languages as $lang)
+		{
+			foreach ($templates['core'] as $tpl) 
+				$toBuild[] = array(
+					'languageCode' => $lang['iso_code'],
+					'template' => $tpl['path']
+				);
+			foreach ($templates['modules'] as $mod) 
+				foreach ($mod as $tpl)
+					$toBuild[] = array(
+						'languageCode' => $lang['iso_code'],
+						'template' => $tpl['path']
+					);
+		}
+
 		$params = array(
 			'templates' => $templates,
-			'languages' => Language::getLanguages()
+			'languages' => $languages,
+			'toBuild' => Tools::jsonEncode($toBuild)
 		);
 		$this->context->smarty->assign($params);
 	}
 
 	public function processDetails()
 	{
+		$error = '';
 		$template = Tools::getValue('template');
 		// Check passed path is authorized
 		if ($this->module->isValidTemplatePath($template))
@@ -76,9 +97,11 @@ class AdminEmailGeneratorController extends ModuleAdminController
 							$data[$files[$mt['file']]][$mt['message']] = $mt['translation'];
 						}
 					}
-					$ok = $this->module->writeTranslations($data);
-					$ok = $ok && $this->module->generateEmail($template, $languageCode);
-					if (!$ok)die("Oops");
+					if (!$this->module->writeTranslations($data))
+						$error = $this->l('Could not write translations (probably a file permissions problem)');
+					if (!$error)
+						$error = $this->module->generateEmail($template, $languageCode);
+
 				}
 
 				Tools::redirectAdmin($url);
@@ -93,8 +116,14 @@ class AdminEmailGeneratorController extends ModuleAdminController
 				'token' => Tools::getValue('token'),
 				'languages' => Language::getLanguages(),
 				'languageCode' => $languageCode,
-				'preview_url' => $this->module->getPreviewURL($template, $languageCode)
+				'preview_url' => $this->module->getPreviewURL($template, $languageCode),
+				'error' => $error
 			));
 		}
+	}
+
+	public function ajaxProcessGenerateEmail($which)
+	{
+		
 	}
 }

@@ -31,4 +31,15 @@
 			{/foreach}
 		</div>
 	</div>
+	<BR/>
+	<form class='form-inline'>
+	<div class="form-group">
+		<div class="col-lg-3">
+			<button class="btn btn-default" type="button">{l s='Generate All Emails'}</button></form>
+		</div>
+	</div>
 </div>
+
+<script>
+	var toBuild = {$toBuild};
+</script>
