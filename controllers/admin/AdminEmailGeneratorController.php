@@ -29,13 +29,13 @@ class AdminEmailGeneratorController extends ModuleAdminController
 
 	public function setMedia()
 	{
-		$this->addCSS('/modules/emailgenerator/css/emailgenerator.css');
+		$this->addCSS(_PS_MODULE_DIR_.'emailgenerator/css/emailgenerator.css');
 		parent::setMedia();
 	}
 
 	public function processIndex()
 	{
-		$this->addJS('/modules/emailgenerator/js/tree.js');
+		$this->addJS(_PS_MODULE_DIR_.'emailgenerator/js/tree.js');
 
 		$templates = EmailGenerator::listEmailTemplates();
 		$languages = Language::getLanguages();
