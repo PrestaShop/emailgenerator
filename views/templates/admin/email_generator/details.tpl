@@ -23,6 +23,12 @@
 	{/foreach}
 {/function}
 
+{if $error}
+	<div class="alert alert-danger">
+		{$error}
+	</div>
+{/if}
+
 <div class="panel">
 	<h3>{$template_name}</h3>
 	<div class="alert alert-info">

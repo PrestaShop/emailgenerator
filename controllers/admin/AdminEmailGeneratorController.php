@@ -44,6 +44,9 @@ class AdminEmailGeneratorController extends ModuleAdminController
 
 		foreach ($languages as $lang)
 		{
+			if ($lang['iso_code'] === 'an')
+				continue;
+
 			foreach ($templates['core'] as $tpl) 
 				$toBuild[] = array(
 					'languageCode' => $lang['iso_code'],
@@ -97,14 +100,19 @@ class AdminEmailGeneratorController extends ModuleAdminController
 							$data[$files[$mt['file']]][$mt['message']] = $mt['translation'];
 						}
 					}
-					if (!$this->module->writeTranslations($data))
-						$error = $this->l('Could not write translations (probably a file permissions problem)');
+					$ok = $this->module->writeTranslations($data);
+					if ($ok !== true)
+						$error = $ok;
 					if (!$error)
-						$error = $this->module->generateEmail($template, $languageCode);
-
+					{
+						$ok = $this->module->generateEmail($template, $languageCode);
+						if ($ok !== true)
+							$error = $ok;
+					}
 				}
 
-				Tools::redirectAdmin($url);
+				if ($error === '')
+					Tools::redirectAdmin($url);
 			}
 
 			$strings = $this->module->extractEmailStrings($template, $languageCode);
@@ -122,8 +130,23 @@ class AdminEmailGeneratorController extends ModuleAdminController
 		}
 	}
 
-	public function ajaxProcessGenerateEmail($which)
+	public function ajaxProcessGenerateEmail()
 	{
-		
+		$res = array('success' => false, 'error_message' => 'Something wrong happened, sorry!');
+
+		$languageCode = Tools::getValue('languageCode');
+		$template = Tools::getValue('template');
+
+		$ok = $this->module->generateEmail($template, $languageCode);
+
+		if ($ok === true)
+		{
+			$res['success'] = true;
+			unset($res['error_message']);
+		}
+		else
+			$res['error_message'] = $ok;
+
+		die(Tools::jsonEncode($res)); 
 	}
 }

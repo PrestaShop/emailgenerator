@@ -154,10 +154,10 @@ class EmailGenerator extends Module
 				$dir = dirname($absPath);
 				if (!is_dir($dir))
 					if (!@mkdir($dir, 0777, true))
-						return false;
+						return $this->l('Could not create directory: ').dirname($relFilePath);
 				$fh = fopen($absPath, 'w');
 				if (!$fh)
-					return false;
+					return $this->l('Could not open for writing: ').$relFilePath;
 				if (flock($fh, LOCK_EX))
 				{
 					fwrite($fh, $phpArray);
@@ -167,11 +167,11 @@ class EmailGenerator extends Module
 				}
 				else
 				{
-					return false;
+					return $this->l('Could not acquire lock on translation file.');
 				}
 			}
 			else
-				return false;
+				return $this->l('Invalid translation file path: ').$relFilePath;
 		}
 		return true;
 	}
@@ -470,7 +470,7 @@ class EmailGenerator extends Module
 
 	public function isValidTranslationFilePath($path)
 	{
-		$absPath = realpath(_PS_ROOT_DIR_.'/'.$path);
+		$absPath = _PS_ROOT_DIR_.'/'.$path;
 		$path = substr($absPath, strlen(_PS_ROOT_DIR_)+1);
 		return 
 			preg_match('#^(?:mails/[a-z]{2}/lang\.php|modules/emailgenerator/templates_translations/[a-z]{2}/lang_content\.php)$#', $path)
