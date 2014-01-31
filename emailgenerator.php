@@ -226,7 +226,7 @@ class EmailGenerator extends Module
         // (because of links like <a href='{shop_url}'></a>)
         if(!empty($_SERVER['HTTP_HOST']))
         {
-                $txt = preg_replace('#\w+://'.$_SERVER['HTTP_HOST'].'/#', '', $txt);
+                $txt = preg_replace('#\w+://'.preg_quote($_SERVER['HTTP_HOST']).'/?#i', '', $txt);
         }
 
         return $txt;
