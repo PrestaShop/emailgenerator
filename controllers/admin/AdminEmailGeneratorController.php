@@ -38,7 +38,15 @@ class AdminEmailGeneratorController extends ModuleAdminController
 		$this->addJS(_PS_MODULE_DIR_.'emailgenerator/js/tree.js');
 
 		$templates = EmailGenerator::listEmailTemplates();
-		$languages = Language::getLanguages();
+		$languages = array();
+
+		foreach (scandir(_PS_ROOT_DIR_.'/mails') as $lc)
+		{
+			if (!preg_match('/^\./', $lc) && is_dir(_PS_ROOT_DIR_.'/mails/'.$lc))
+			{
+				$languages[] = array('iso_code' => $lc);
+			}
+		}
 
 		$toBuild = array();
 
