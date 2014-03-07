@@ -19,7 +19,7 @@
 					<font size="2" face="Open-sans, sans-serif" color="#555454">
 						<span>
 							<?php echo t('Your friend <span><strong>{firstname} {lastname}</strong></span> wants to refer you on <a href="{shop_url}">{shop_name}</a>!'); ?><br /><br /> 
-							<?php echo t('We are pleased to offer you a voucher worth <span><strong>{discount_display} (voucher # {discount_name})</strong></span> that you can use on your next order.'); ?>			
+							<?php echo t('We are pleased to offer you a voucher worth <span><strong>{discount}</strong></span> that you can use on your next order.'); ?>			
 							<?php echo t('Get referred and earn a discount voucher of <span><strong>{discount}!</strong></span>'); ?>
 							<a title="Register" href="{link}"><?php echo t('It&#039;s very easy to sign up. Just click here!'); ?></a>
 						</span>
