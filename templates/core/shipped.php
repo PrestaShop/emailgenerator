@@ -35,7 +35,7 @@
 <tr>
 	<td class="linkbelow">
 		<span>
-			<?php echo t('You can now place orders on our shop:'); ?> <a href="{shop_url}">{shop_name}</a>
+			<?php echo t('You can review your order and download your invoice from the <a href="{history_url}">"Order history"</a> section of your customer account by clicking <a href="{my_account_url}">"My account"</a> on our shop.'); ?>
 		</span>
 	</td>
 </tr>
