@@ -35,7 +35,7 @@
 	<div class='form-horizontal'>
 		<div class="form-group">
 			<div class="col-lg-3">
-				<button onclick='javascript:generateEmails();' class="btn btn-default" type="button">{l s='Generate All Emails'}</button>
+				<button id='generate-all-emails' onclick='javascript:generateEmails();' class="btn btn-default" type="button">{l s='Generate All Emails'}</button>
 			</div>
 			<div class="col-lg-9">
 				<div id="feedback"></div>
