@@ -7,6 +7,19 @@ require_once dirname(__FILE__).'/vendor/cssin/cssin.php';
 require_once dirname(__FILE__).'/vendor/cssin/vendor/simple_html_dom/simple_html_dom.php';
 require_once dirname(__FILE__).'/vendor/html_to_text/Html2Text.php';
 
+global $EMAIL_TRANSLATIONS_DICTIONARY;
+$EMAIL_TRANSLATIONS_DICTIONARY = array();
+// Function to put the translations in the templates
+function t($str)
+{
+	global $EMAIL_TRANSLATIONS_DICTIONARY;
+
+	if (isset($EMAIL_TRANSLATIONS_DICTIONARY[$str]) && trim($EMAIL_TRANSLATIONS_DICTIONARY[$str]) !== '')
+		return $EMAIL_TRANSLATIONS_DICTIONARY[$str];
+	else
+		return $str;
+}
+
 class EmailGenerator extends Module
 {
 	public function __construct()
@@ -234,6 +247,7 @@ class EmailGenerator extends Module
 
 	public function generateEmail($template, $languageCode)
 	{
+		@ini_set('display_errors', 'on');
 		static $cssin;
 
 		if (!$cssin)
@@ -241,13 +255,32 @@ class EmailGenerator extends Module
 			$cssin = new CSSIN();
 		}
 
-		$template_url = $this->getPreviewURL($template, $languageCode);
+		global $EMAIL_TRANSLATIONS_DICTIONARY;
+		$dictionary_path = dirname(__FILE__).'/templates_translations/'.$languageCode.'/lang_content.php';
+		if (file_exists($dictionary_path))
+			$EMAIL_TRANSLATIONS_DICTIONARY = include($dictionary_path);
+		else
+			$EMAIL_TRANSLATIONS_DICTIONARY = array();
+
+		$emailPublicWebRoot = Tools::getShopDomain(true).__PS_BASE_URI__.'modules/emailgenerator/templates/';
+
+		ob_start();
+
+		if (!empty($_GET['cheat_logo']))
+		{
+			echo "<style>img[src='{shop_logo}']{content: url('{$emailPublicWebRoot}logo.jpg');}</style>";
+		}
+
+		include dirname(__FILE__).'/'.$template;
+		$raw_html = ob_get_clean();
+
+		//die ($raw_html);
 
 		$output_basename = $this->getBaseOutputName($template, $languageCode);
 		if ($output_basename === false)
-			return $this->l('Template name is invalid.');
+			throw new Exception($this->l('Template name is invalid.'));
 
-		$html = $cssin->inlineCSS($template_url);
+		$html = $cssin->inlineCSS(null, $raw_html);
 		$text = $this->textify($html);
 
 		$write = array(
@@ -261,19 +294,12 @@ class EmailGenerator extends Module
 			if (!is_dir($dir))
 			{
 				if(!@mkdir($dir, 0777, true))
-					return $this->l('Could not create directory to write email to.');
+					throw new Exception($this->l('Could not create directory to write email to.'));
 			}
 			if(!@file_put_contents($path, $data))
-				return $this->l('Could not write email file.');
+				throw new Exception($this->l('Could not write email file: '.$path));
 		}
-		return true;
-	}
-
-	public function getPreviewURL($template, $languageCode)
-	{
-		return Tools::getShopDomain(true).__PS_BASE_URI__
-		.'modules/emailgenerator/templates/viewer.php?template='.urlencode($template)
-		.'&languageCode='.$languageCode;
+		return array('html' => $html, 'text' => $text);
 	}
 
 	public function currentLanguageCode()

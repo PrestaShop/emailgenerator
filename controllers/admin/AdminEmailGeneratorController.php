@@ -114,14 +114,11 @@ class AdminEmailGeneratorController extends ModuleAdminController
 						$error = $ok;
 					if (!$error)
 					{
-						$ok = $this->module->generateEmail($template, $languageCode);
-						if ($ok !== true)
-							$error = $ok;
+						$this->module->generateEmail($template, $languageCode);
 					}
 				}
 
-				if ($error === '')
-					Tools::redirectAdmin($url);
+				Tools::redirectAdmin($url);
 			}
 
 			$strings = $this->module->extractEmailStrings($template, $languageCode);
@@ -133,10 +130,18 @@ class AdminEmailGeneratorController extends ModuleAdminController
 				'token' => Tools::getValue('token'),
 				'languages' => Language::getLanguages(),
 				'languageCode' => $languageCode,
-				'preview_url' => $this->module->getPreviewURL($template, $languageCode),
 				'error' => $error
 			));
 		}
+	}
+
+	public function processPreview()
+	{
+		$template = Tools::getValue('template');
+		$languageCode = Tools::getValue('languageCode');
+		$generated = $this->module->generateEmail($template, $languageCode);
+
+		die($generated['html']);
 	}
 
 	public function ajaxProcessGenerateEmail()
@@ -146,15 +151,15 @@ class AdminEmailGeneratorController extends ModuleAdminController
 		$languageCode = Tools::getValue('languageCode');
 		$template = Tools::getValue('template');
 
-		$ok = $this->module->generateEmail($template, $languageCode);
-
-		if ($ok === true)
-		{
+		try {
+			$this->module->generateEmail($template, $languageCode);
 			$res['success'] = true;
 			unset($res['error_message']);
 		}
-		else
-			$res['error_message'] = $ok;
+		catch (Exception $e)
+		{
+			$res['error_message'] = $e->getMessage();
+		}	
 
 		die(Tools::jsonEncode($res)); 
 	}

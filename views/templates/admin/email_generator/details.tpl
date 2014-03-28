@@ -62,7 +62,7 @@
 		</div>
 	</form>
 	
-	<a target="_blank" href="{$preview_url}&amp;preview" class="btn btn-default">{l s='Preview HTML Version' mod='emailgenerator'}</a>
+	<a target="_blank" href="{$link->getAdminLink('AdminEmailGenerator')}&amp;languageCode={$languageCode|urlencode}&amp;template={$template|urlencode}&amp;action=preview&amp;cheat_logo=1" class="btn btn-default">{l s='Preview HTML Version & Generate Email' mod='emailgenerator'}</a>
 
 	<form action="" method="POST">
 		{foreach from=$strings.files item=path key=id}
