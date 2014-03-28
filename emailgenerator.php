@@ -262,6 +262,9 @@ class EmailGenerator extends Module
 
 	public function generateEmail($template, $languageCode)
 	{
+		if (!preg_match('#^templates/(core/[^/]+|modules/[^\./]+/[^/]+)$#', $template))
+			throw new Exception('NAH, wrong template name.');
+
 		@ini_set('display_errors', 'on');
 		static $cssin;
 
@@ -280,6 +283,11 @@ class EmailGenerator extends Module
 			$EMAIL_TRANSLATIONS_DICTIONARY = array();
 
 		$emailPublicWebRoot = Tools::getShopDomain(true).__PS_BASE_URI__.'modules/emailgenerator/templates/';
+
+		if (dirname($template) !== 'templates/core')
+		{
+			set_include_path(dirname(__FILE__).'/templates/core:'.get_include_path());
+		}
 
 		ob_start();
 
