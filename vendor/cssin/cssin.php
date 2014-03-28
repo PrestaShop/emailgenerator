@@ -21,6 +21,7 @@ class CSSIN
 
 	private $cssFiles = array();
 	private $parsed_css = array();
+	private $css_getter = null;
 
 	/*
 	* Retrieves a CSS stylesheet and caches it before returning it.
@@ -29,9 +30,21 @@ class CSSIN
 	{
 		if(!isset($cssFiles[$url]))
 		{
-			$cssFiles[$url]	= file_get_contents($url);
+			if ($this->css_getter)
+			{
+				$cssFiles[$url]	= call_user_func($this->css_getter, $url);
+			}
+			else
+			{
+				$cssFiles[$url]	= file_get_contents($url);
+			}
 		}
 		return $cssFiles[$url];
+	}
+
+	public function setCSSGetter($callable)
+	{
+		$this->css_getter = $callable;
 	}
 
 	/*
