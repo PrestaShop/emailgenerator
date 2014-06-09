@@ -107,7 +107,7 @@ class EmailGenerator extends Module
 					);
 				}
 			}
-		
+
 		if(is_dir(dirname(__FILE__).'/templates/modules'))
 			foreach (scandir(dirname(__FILE__).'/templates/modules') as $module)
 			{
@@ -219,7 +219,7 @@ class EmailGenerator extends Module
 	public function textify($html)
     {
         $html      = str_get_html($html);
-        foreach($html->find("//[data-html-only='1']") as $kill)
+        foreach($html->find("[data-html-only='1'],html-only") as $kill)
         {
                 $kill->outertext = "";
         }
@@ -253,7 +253,7 @@ class EmailGenerator extends Module
     		$path = _PS_ROOT_DIR_.'/'.substr($url, strlen($webRoot));
     		if (!file_exists($path))
     			throw new Exception('Could not find CSS file: '.$path);
-    			
+
     		return file_get_contents($path);
     	}
     	else
@@ -299,14 +299,26 @@ class EmailGenerator extends Module
 		include dirname(__FILE__).'/'.$template;
 		$raw_html = ob_get_clean();
 
-		//die ($raw_html);
+
 
 		$output_basename = $this->getBaseOutputName($template, $languageCode);
 		if ($output_basename === false)
 			throw new Exception($this->l('Template name is invalid.'));
 
-		$html = $cssin->inlineCSS(null, $raw_html);
-		$text = $this->textify($html);
+		$html_for_html = str_get_html($raw_html, true, true, DEFAULT_TARGET_CHARSET, false, DEFAULT_BR_TEXT, DEFAULT_SPAN_TEXT);
+		foreach($html_for_html->find("[data-text-only='1']") as $kill)
+		{
+				$kill->outertext = "";
+		}
+		foreach($html_for_html->find("html-only") as $node)
+		{
+				$node->outertext = $node->innertext;
+		}
+
+		$html_for_html = (string)$html_for_html;
+
+		$html = $cssin->inlineCSS(null, $html_for_html);
+		$text = $this->textify($raw_html);
 
 		$write = array(
 			$output_basename.'.txt' => $text,
@@ -345,7 +357,7 @@ class EmailGenerator extends Module
 			include($path);
 			$dictionary = $_LANGMAIL;
 			$_LANGMAIL = $old;
-			return $dictionary;	
+			return $dictionary;
 		}
 		else
 			return array();
@@ -405,7 +417,7 @@ class EmailGenerator extends Module
 		require_once dirname(__FILE__).'/vendor/simple_parsers/classes/SimplePHPFunctionCallParser.php';
 		$data = file_get_contents(dirname(__FILE__).'/'.$template);
 		$parser = new SimplePHPFunctionCallParser('t');
-		
+
 		$body_strings = $parser->parse($data);
 		$body_translations = $this->getBodyTranslations($language);
 
@@ -460,7 +472,7 @@ class EmailGenerator extends Module
 		}
 
 		$subject_translations = $this->getSubjectTranslations($language);
-		
+
 		$subjects = array();
 		foreach($subject_strings as $str)
 		{
@@ -470,7 +482,7 @@ class EmailGenerator extends Module
 				$translation = '';
 
 			$subjects[$str] = array(
-				'translation' => $translation, 
+				'translation' => $translation,
 				'id' => ++$id,
 				'file' => 1
 			);
@@ -485,7 +497,7 @@ class EmailGenerator extends Module
 				$translation = '';
 
 			$potential_subjects[$str] = array(
-				'translation' => $translation, 
+				'translation' => $translation,
 				'id' => ++$id,
 				'file' => 1
 			);
@@ -523,7 +535,7 @@ class EmailGenerator extends Module
 	{
 		$absPath = _PS_ROOT_DIR_.'/'.$path;
 		$path = substr($absPath, strlen(_PS_ROOT_DIR_)+1);
-		return 
+		return
 			preg_match('#^(?:mails/[a-z]{2}/lang\.php|modules/emailgenerator/templates_translations/[a-z]{2}/lang_content\.php)$#', $path)
 			? $absPath
 			: false;

@@ -48,7 +48,7 @@
 				<tbody>
 					<tr>
 						<td colspan="5" style="border:1px solid #D6D4D4;">
-							&nbsp;&nbsp;{products}
+							&nbsp;&nbsp;<html-only>{products}</html-only> <span data-text-only="1">products_txt</span>
 						</td>
 					</tr>
 					<tr>
@@ -266,8 +266,11 @@
 									<p data-html-only="1" style="border-bottom:1px solid #D6D4D4;">
 										<?php echo t('Delivery address'); ?>
 									</p>
-									<span>
+									<span data-html-only="1">
 										{delivery_block_html}
+									</span>
+									<span data-text-only="1">
+										{delivery_block_txt}
 									</span>
 								</font>
 							</td>
@@ -285,8 +288,11 @@
 									<p data-html-only="1" style="border-bottom:1px solid #D6D4D4;">
 										<?php echo t('Billing address'); ?>
 									</p>
-									<span>
+									<span data-html-only="1">
 										{invoice_block_html}
+									</span>
+									<span data-text-only="1">
+										{invoice_block_txt}
 									</span>
 								</font>
 							</td>

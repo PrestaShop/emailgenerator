@@ -45,10 +45,10 @@
 							<?php echo t('You have selected to pay by check.'); ?>
 						</p>
 						<span>
-							<?php echo t('Here are the bank details for your check:'); ?><br /> 
+							<?php echo t('Here are the bank details for your check:'); ?><br />
 							<span><strong><?php echo t('Amount:'); ?></strong></span> {total_paid}<br />
 							<span><strong><?php echo t('Payable to the order of:'); ?></strong></span> {cheque_name}<br />
-							<span><strong><?php echo t('Please mail your check to:'); ?></strong></span> {cheque_address_html}
+							<span><strong><?php echo t('Please mail your check to:'); ?></strong></span> <html-only>{cheque_address_html}</html-only> <span data-text-only='1'>{cheque_address}</span>
 						</span>
 					</font>
 				</td>
