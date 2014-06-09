@@ -48,7 +48,7 @@
 				<tbody>
 					<tr>
 						<td colspan="5" style="border:1px solid #D6D4D4;">
-							&nbsp;&nbsp;<html-only>{products}</html-only> <span data-text-only="1">products_txt</span>
+							&nbsp;&nbsp;<html-only>{products}</html-only> <span data-text-only="1">{products_txt}</span>
 						</td>
 					</tr>
 					<tr>
