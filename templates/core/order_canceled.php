@@ -18,10 +18,10 @@
 				<td>
 					<font size="2" face="Open-sans, sans-serif" color="#555454">
 						<p data-html-only="1" style="border-bottom:1px solid #D6D4D4;">
-							<?php echo t('Order {order_name}'); ?>&nbsp;-&nbsp;<?php echo t('Order cancelled'); ?>
+							<?php echo t('Order {order_name}'); ?>&nbsp;-&nbsp;<?php echo t('Order canceled'); ?>
 						</p>
 						<span>
-							<?php echo t('Your order with the reference <span><strong>{order_name}</strong></span> from <span><strong>{shop_name}</strong></span> has been cancelled.'); ?>
+							<?php echo t('Your order with the reference <span><strong>{order_name}</strong></span> from <span><strong>{shop_name}</strong></span> has been canceled.'); ?>
 						</span>
 					</font>
 				</td>

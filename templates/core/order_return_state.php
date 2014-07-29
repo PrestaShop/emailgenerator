@@ -21,8 +21,7 @@
 							<?php echo t('Return #{id_order_return} - update'); ?>
 						</p>
 						<span>
-							<?php echo t('We have updated the progress on your return #{id_order_return}, the new status is:'); ?> <span><strong>"{state_order_return}"</strong></span><br /><br />
-							<span><strong><?php echo t('Message:'); ?></strong></span> {message}
+							<?php echo t('We have updated the progress on your return #{id_order_return}, the new status is:'); ?> <span><strong>"{state_order_return}"</strong></span><br />
 						</span>
 					</font>
 				</td>
