@@ -4,7 +4,6 @@
 	<td align="center" class="titleblock">
 		<font size="2" face="Open-sans, sans-serif" color="#555454">
 			<span class="title"><?php echo t('Hi {name},'); ?></span><br/>
-			<span class="subtitle"><?php echo t('Thank you for creating a customer account at {shop_name}.'); ?></span>
 		</font>
 	</td>
 </tr>
