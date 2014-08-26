@@ -2,7 +2,7 @@
 
 <tr>
 	<td align="center" class="titleblock">
-		<font size="2" face="Open-sans, sans-serif" color="#555454">
+		<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 			<span class="title"><?php echo t('Message from a {shop_name} customer'); ?></span>
 		</font>
 	</td>
@@ -16,7 +16,7 @@
 			<tr>
 				<td width="10">&nbsp;</td>
 				<td>
-					<font size="2" face="Open-sans, sans-serif" color="#555454">
+					<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 						<span>
 							<span><strong><?php echo t('Customer e-mail address:'); ?> <a href="mailto:{email}">{email}</a></strong></span><br /><br />
 							<span><strong><?php echo t('Customer message:'); ?></strong></span> {message}<br /><br />

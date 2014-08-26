@@ -2,7 +2,7 @@
 
 <tr>
 	<td align="center" class="titleblock">
-		<font size="2" face="Open-sans, sans-serif" color="#555454">
+		<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 			<span class="title"><?php echo t('Your message to {shop_name} Customer Service'); ?></span>
 		</font>
 	</td>
@@ -16,7 +16,7 @@
 			<tr>
 				<td width="10">&nbsp;</td>
 				<td>
-					<font size="2" face="Open-sans, sans-serif" color="#555454">
+					<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 						<span>
 							<?php echo t('Your message has been sent successfully.'); ?><br /><br />
 							<span><strong><?php echo t('Message:'); ?></strong></span> {message}<br /><br />
@@ -36,7 +36,7 @@
 </tr>
 <tr>
 	<td class="linkbelow">
-		<font size="2" face="Open-sans, sans-serif" color="#555454">
+		<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 			<span>
 				<?php echo t('We will answer as soon as possible.'); ?>
 			</span>

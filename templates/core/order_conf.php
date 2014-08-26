@@ -2,7 +2,7 @@
 
 <tr>
 	<td align="center" class="titleblock">
-		<font size="2" face="Open-sans, sans-serif" color="#555454">
+		<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 			<span class="title"><?php echo t('Hi {firstname} {lastname},'); ?></span><br/>
 			<span class="subtitle"><?php echo t('Thank you for shopping with {shop_name}!'); ?></span>
 		</font>
@@ -17,7 +17,7 @@
 			<tr>
 				<td width="10">&nbsp;</td>
 				<td>
-					<font size="2" face="Open-sans, sans-serif" color="#555454">
+					<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 						<p data-html-only="1" style="border-bottom:1px solid #D6D4D4;">
 							<?php echo t('Order details'); ?>
 						</p>
@@ -34,7 +34,7 @@
 </tr>
 <tr>
 	<td>
-		<font size="2" face="Open-sans, sans-serif" color="#555454">
+		<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 			<table class="table table-recap" bgcolor="#ffffff"><!-- Title -->
 				<thead>
 					<tr>
@@ -62,7 +62,7 @@
 								<tr>
 									<td width="10">&nbsp;</td>
 									<td align="right">
-										<font size="2" face="Open-sans, sans-serif" color="#555454">
+										<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 											<strong><?php echo t('Products'); ?></strong>
 										</font>
 									</td>
@@ -75,7 +75,7 @@
 								<tr>
 									<td width="10">&nbsp;</td>
 									<td align="right">
-										<font size="2" face="Open-sans, sans-serif" color="#555454">
+										<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 											{total_products}
 										</font>
 									</td>
@@ -90,7 +90,7 @@
 								<tr>
 									<td width="10">&nbsp;</td>
 									<td align="right">
-										<font size="2" face="Open-sans, sans-serif" color="#555454">
+										<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 											<strong><?php echo t('Discounts'); ?></strong>
 										</font>
 									</td>
@@ -103,7 +103,7 @@
 								<tr>
 									<td width="10">&nbsp;</td>
 									<td align="right">
-										<font size="2" face="Open-sans, sans-serif" color="#555454">
+										<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 											{total_discounts}
 										</font>
 									</td>
@@ -118,7 +118,7 @@
 								<tr>
 									<td width="10">&nbsp;</td>
 									<td align="right">
-										<font size="2" face="Open-sans, sans-serif" color="#555454">
+										<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 											<strong><?php echo t('Gift-wrapping'); ?></strong>
 										</font>
 									</td>
@@ -131,7 +131,7 @@
 								<tr>
 									<td width="10">&nbsp;</td>
 									<td align="right">
-										<font size="2" face="Open-sans, sans-serif" color="#555454">
+										<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 											{total_wrapping}
 										</font>
 									</td>
@@ -146,7 +146,7 @@
 								<tr>
 									<td width="10">&nbsp;</td>
 									<td align="right">
-										<font size="2" face="Open-sans, sans-serif" color="#555454">
+										<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 											<strong><?php echo t('Shipping'); ?></strong>
 										</font>
 									</td>
@@ -159,7 +159,7 @@
 								<tr>
 									<td width="10">&nbsp;</td>
 									<td align="right">
-										<font size="2" face="Open-sans, sans-serif" color="#555454">
+										<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 											{total_shipping}
 										</font>
 									</td>
@@ -174,7 +174,7 @@
 								<tr>
 									<td width="10">&nbsp;</td>
 									<td align="right">
-										<font size="2" face="Open-sans, sans-serif" color="#555454">
+										<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 											<strong><?php echo t('Total Tax paid'); ?></strong>
 										</font>
 									</td>
@@ -187,7 +187,7 @@
 								<tr>
 									<td width="10">&nbsp;</td>
 									<td align="right">
-										<font size="2" face="Open-sans, sans-serif" color="#555454">
+										<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 											{total_tax_paid}
 										</font>
 									</td>
@@ -202,7 +202,7 @@
 								<tr>
 									<td width="10">&nbsp;</td>
 									<td align="right">
-										<font size="2" face="Open-sans, sans-serif" color="#555454">
+										<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 											<strong><?php echo t('Total paid'); ?></strong>
 										</font>
 									</td>
@@ -215,7 +215,7 @@
 								<tr>
 									<td width="10">&nbsp;</td>
 									<td align="right">
-										<font size="4" face="Open-sans, sans-serif" color="#555454">
+										<font size="4" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 											{total_paid}
 										</font>
 									</td>
@@ -235,7 +235,7 @@
 			<tr>
 				<td width="10">&nbsp;</td>
 				<td>
-					<font size="2" face="Open-sans, sans-serif" color="#555454">
+					<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 						<p data-html-only="1" style="border-bottom:1px solid #D6D4D4;">
 							<?php echo t('Shipping'); ?>
 						</p>
@@ -262,7 +262,7 @@
 						<tr>
 							<td width="10">&nbsp;</td>
 							<td>
-								<font size="2" face="Open-sans, sans-serif" color="#555454">
+								<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 									<p data-html-only="1" style="border-bottom:1px solid #D6D4D4;">
 										<?php echo t('Delivery address'); ?>
 									</p>
@@ -284,7 +284,7 @@
 						<tr>
 							<td width="10">&nbsp;</td>
 							<td>
-								<font size="2" face="Open-sans, sans-serif" color="#555454">
+								<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 									<p data-html-only="1" style="border-bottom:1px solid #D6D4D4;">
 										<?php echo t('Billing address'); ?>
 									</p>
@@ -309,7 +309,7 @@
 </tr>
 <tr>
 	<td class="linkbelow">
-		<font size="2" face="Open-sans, sans-serif" color="#555454">
+		<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 			<span>
 				<?php echo t('You can review your order and download your invoice from the <a href="{history_url}">"Order history"</a> section of your customer account by clicking <a href="{my_account_url}">"My account"</a> on our shop.'); ?>
 			</span>
@@ -318,7 +318,7 @@
 </tr>
 <tr>
 	<td class="linkbelow">
-		<font size="2" face="Open-sans, sans-serif" color="#555454">
+		<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 			<span>
 				<?php echo t('If you have a guest account, you can follow your order via the <a href="{guest_tracking_url}?id_order={order_name}">"Guest Tracking"</a> section on our shop.'); ?>
 			</span>
