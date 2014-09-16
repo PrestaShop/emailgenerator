@@ -2,7 +2,7 @@
 
 <tr>
 	<td align="center" class="titleblock">
-		<font size="2" face="Open-sans, sans-serif" color="#555454">
+		<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 			<span class="title"><?php echo t('Congratulations!'); ?></span>
 		</font>
 	</td>
@@ -16,7 +16,7 @@
 			<tr>
 				<td width="10">&nbsp;</td>
 				<td>
-					<font size="2" face="Open-sans, sans-serif" color="#555454">
+					<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 						<span>
 							<?php echo t('Your referred friend <span><strong>{sponsored_firstname} {sponsored_lastname}</strong></span> has placed his or her first order on <a href="{shop_url}">{shop_name}</a>!'); ?><br /><br /> 
 							<?php echo t('We are pleased to offer you a voucher worth <span><strong>{discount_display} (voucher # {discount_name})</strong></span> that you can use on your next order.'); ?>
@@ -33,7 +33,7 @@
 </tr>
 <tr>
 	<td class="linkbelow">
-		<font size="2" face="Open-sans, sans-serif" color="#555454">
+		<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 			<span><?php echo t('Best regards,'); ?></span>
 		</font>
 	</td>

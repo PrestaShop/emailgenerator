@@ -22,6 +22,12 @@ function t($str)
 
 class EmailGenerator extends Module
 {
+	protected static $_rtl_langs = array('fa', 'ar', 'he', 'ur', 'ug', 'ku');
+	protected static $_lang_default_font = array(
+		'fa' => 'Tahoma',
+		'ar' => 'Tahoma'
+	);
+
 	public function __construct()
 	{
 		$this->name = 'emailgenerator';
@@ -283,6 +289,10 @@ class EmailGenerator extends Module
 			$EMAIL_TRANSLATIONS_DICTIONARY = array();
 
 		$emailPublicWebRoot = Tools::getShopDomain(true).__PS_BASE_URI__.'modules/emailgenerator/templates/';
+		$emailLangIsRTL = in_array($languageCode,self::$_rtl_langs); // see header.php
+		$emailDefaultFont = '';
+		if (array_key_exists($languageCode,self::$_lang_default_font))
+			$emailDefaultFont = (self::$_lang_default_font[$languageCode]).',';
 
 		if (dirname($template) !== 'templates/core')
 		{
