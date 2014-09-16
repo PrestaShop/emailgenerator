@@ -290,7 +290,7 @@ class EmailGenerator extends Module
 
 		$emailPublicWebRoot = Tools::getShopDomain(true).__PS_BASE_URI__.'modules/emailgenerator/templates/';
 		$emailLangIsRTL = in_array($languageCode,self::$_rtl_langs); // see header.php
-		$emailDefaultFont = '';
+		$emailDefaultFont = 'Open-sans, sans-serif';
 		if (array_key_exists($languageCode,self::$_lang_default_font))
 			$emailDefaultFont = (self::$_lang_default_font[$languageCode]).',';
 
