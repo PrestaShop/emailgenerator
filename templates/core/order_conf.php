@@ -1,4 +1,4 @@
-<?php include ('header.php'); ?>
+<?php include ('header_order_conf.php'); ?>
 
 <tr>
 	<td align="center" class="titleblock">
