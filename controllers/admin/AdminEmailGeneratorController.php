@@ -56,7 +56,7 @@ class AdminEmailGeneratorController extends ModuleAdminController
 				continue;
 
 			foreach ($templates['core'] as $tpl) 
-				if(basename($tpl['path']) !== 'header.php' && basename($tpl['path']) !== 'footer.php')
+				if(!preg_match('/^header/', basename($tpl['path'])) && !preg_match('/^footer/', basename($tpl['path'])))
 					$toBuild[] = array(
 						'languageCode' => $lang['iso_code'],
 						'template' => $tpl['path']
