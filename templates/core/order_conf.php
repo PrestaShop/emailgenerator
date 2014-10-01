@@ -40,9 +40,9 @@
 					<tr>
 						<th style="border:1px solid #D6D4D4;"><?php echo t('Reference'); ?></th>
 						<th style="border:1px solid #D6D4D4;"><?php echo t('Product'); ?></th>
-						<th style="border:1px solid #D6D4D4;"><?php echo t('Unit price'); ?></th>
+						<th style="border:1px solid #D6D4D4;" width="17%"><?php echo t('Unit price'); ?></th>
 						<th style="border:1px solid #D6D4D4;"><?php echo t('Quantity'); ?></th>
-						<th style="border:1px solid #D6D4D4;"><?php echo t('Total price'); ?></th>
+						<th style="border:1px solid #D6D4D4;" width="17%"><?php echo t('Total price'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
