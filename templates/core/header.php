@@ -29,10 +29,10 @@
 			} 
 							
 			@media only screen and (min-width: 301px) and (max-width: 500px) { 
-				body {width:425px!important;margin:auto!important;}
-				.table {width:400px!important;margin:auto!important;}	
+				body {width:308px!important;margin:auto!important;}
+				.table {width:285px!important;margin:auto!important;}	
 				.logo, .titleblock, .linkbelow, .box, .footer, .space_footer{width:auto!important;display: block!important;}	
-				.table-recap table, .table-recap tbody, .table-recap td, .table-recap tr { 
+				.table-recap table, .table-recap thead, .table-recap tbody, .table-recap th, .table-recap td, .table-recap tr { 
 					display: block !important; 
 				}
 				.table-recap{width: 295px !important;}
@@ -50,7 +50,7 @@
 			/* Mobile */
 
 			@media only screen and (max-device-width: 480px) { 
-				body {width:425px!important;margin:auto!important;}
+				body {width:308px!important;margin:auto!important;}
 				.table {width:285px;margin:auto!important;}	
 				.logo, .titleblock, .linkbelow, .box, .footer, .space_footer{width:auto!important;display: block!important;}
 				

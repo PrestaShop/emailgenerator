@@ -14,6 +14,7 @@
 					width:218px !important;
 					margin:auto !important;
 				}
+				thead, tbody{width: 100%}
 				.table {width:195px !important;margin:auto !important;}
 				.logo, .titleblock, .linkbelow, .box, .footer, .space_footer{width:auto !important;display: block !important;}		
 				span.title{font-size:20px !important;line-height: 23px !important}
@@ -30,19 +31,19 @@
 							
 			@media only screen and (min-width: 301px) and (max-width: 500px) { 
 				body {width:425px!important;margin:auto!important;}
-				.table {width:400px!important;margin:auto!important;}	
+				thead, tbody{width: 100%}
+				.table {margin:auto!important;}	
 				.logo, .titleblock, .linkbelow, .box, .footer, .space_footer{width:auto!important;display: block!important;}	
-				.table-recap table, .table-recap tbody, .table-recap td, .table-recap tr { 
-					display: block !important; 
-				}
 				.table-recap{width: 295px !important;}
 				.table-recap tr td, .conf_body td{text-align:center !important;}
+				.table-recap tr th{font-size: 10px !important}
 				
 			} 
 
 			@media only screen and (min-width: 501px) and (max-width: 768px) {
 				body {width:478px!important;margin:auto!important;}
-				.table {width:450px!important;margin:auto!important;}	
+				thead, tbody{width: 100%}
+				.table {margin:auto!important;}	
 				.logo, .titleblock, .linkbelow, .box, .footer, .space_footer{width:auto!important;display: block!important;}			
 			}
 
@@ -50,8 +51,9 @@
 			/* Mobile */
 
 			@media only screen and (max-device-width: 480px) { 
-				body {width:425px!important;margin:auto!important;}
-				.table {width:285px;margin:auto!important;}	
+				body {width:340px!important;margin:auto!important;}
+				thead, tbody{width: 100%}
+				.table {margin:auto!important;}	
 				.logo, .titleblock, .linkbelow, .box, .footer, .space_footer{width:auto!important;display: block!important;}
 				
 				.table-recap{width: 295px!important;}
