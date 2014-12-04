@@ -4,7 +4,7 @@
 	<td align="center" class="titleblock">
 		<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 			<span class="title"><?php echo t('Hi {firstname} {lastname},'); ?></span><br/>
-			<span class="subtitle"><?php echo t('Thank you for shopping with {shop_name}!'); ?></span>
+			<span class="subtitle"><?php echo t('Your order has been shipped'); ?></span>
 		</font>
 	</td>
 </tr>
@@ -23,7 +23,7 @@
 						</p>
 						<span>
 							<?php echo t('Your order with the reference <span><strong>{order_name}</strong></span> has been shipped.'); ?><br /> 
-							<?php echo t('You will soon receive a link to track the delivery progress of your package.'); ?>
+							<?php echo t('Thank you for shopping with {shop_name}!'); ?>
 						</span>
 					</font>
 				</td>
