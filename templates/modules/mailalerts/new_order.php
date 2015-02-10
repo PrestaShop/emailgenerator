@@ -10,7 +10,7 @@
 <tr>
 	<td class="linkbelow">
 		<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
-			<span><?php echo t('A new order was placed on {shop_name} from the following customer: {firstname} {lastname} ({email})'); ?></span>
+			<span><?php echo t('A new order was placed on {shop_name} by the following customer: {firstname} {lastname} ({email})'); ?></span>
 		</font>
 	</td>
 </tr>
