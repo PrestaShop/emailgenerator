@@ -64,7 +64,7 @@
 		</style>
 
 	</head>
-	<body style="-webkit-text-size-adjust:none;">
+	<body style="-webkit-text-size-adjust:none;" <?php if ($emailLangIsRTL) : ?>dir="rtl"<?php endif; ?>>
 		<table class="table table-mail">
 			<tr>
 				<td class="space">&nbsp;</td>
