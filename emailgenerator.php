@@ -103,42 +103,52 @@ class emailgenerator extends Module
             return $templates;
         }
 
+        $rootOfTemplates = implode(DIRECTORY_SEPARATOR, [
+            __DIR__, 'templates', 'versions',
+        ]);
+
+        $version = _PS_VERSION_;
+
+        $templateDirectories = ['common', $version];
+
         $templates = array('core' => array(), 'modules' => array());
 
-        if (is_dir(dirname(__FILE__).'/templates/core')) {
-            foreach (scandir(dirname(__FILE__).'/templates/core') as $entry) {
-                $path = dirname(__FILE__).'/templates/core/'.$entry;
+        foreach ($templateDirectories as $dir) {
+            $root = $rootOfTemplates.DIRECTORY_SEPARATOR.$dir;
 
+            if (!is_dir($root)) {
+                continue;
+            }
+
+            $coreDir = $root.DIRECTORY_SEPARATOR.'core';
+            foreach (scandir($coreDir) as $entry) {
                 if (preg_match('/\.php$/', $entry)) {
-                    $templates['core'][] = array(
-                        'path' => self::relativePath($path),
-                        'name' => self::humanizeString(basename($entry, '.php')),
-                    );
+                    $templates['core'][$entry] = [
+                            'path' => self::relativePath($coreDir.DIRECTORY_SEPARATOR.$entry),
+                            'name' => self::humanizeString(basename($entry, '.php')),
+                    ];
                 }
             }
-        }
 
-        if (is_dir(dirname(__FILE__).'/templates/modules')) {
-            foreach (scandir(dirname(__FILE__).'/templates/modules') as $module) {
-                $dir = dirname(__FILE__).'/templates/modules/'.$module;
-
-                if (!preg_match('/^\./', $module) && is_dir($dir)) {
-                    $templates['modules'][$module] = array();
-
-                    foreach (scandir($dir) as $entry) {
-                        $path = $dir.'/'.$entry;
+            $modulesDir = $root.DIRECTORY_SEPARATOR.'modules';
+            foreach (scandir($modulesDir) as $moduleName) {
+                $moduleDir = $modulesDir.DIRECTORY_SEPARATOR.$moduleName;
+                if ($moduleName[0] !== '.' && is_dir($moduleDir)) {
+                    foreach (scandir($moduleDir) as $entry) {
                         if (preg_match('/\.php$/', $entry)) {
-                            $templates['modules'][$module][] = array(
-                                'path' => self::relativePath($path),
-                                'name' => self::humanizeString(basename($entry, '.php')),
-                            );
+                            if (!isset($templates['modules'][$moduleName])) {
+                                $templates['modules'][$moduleName] = [];
+                            }
+
+                            $templates['modules'][$moduleName][$entry] = [
+                                    'path' => self::relativePath($moduleDir.DIRECTORY_SEPARATOR.$entry),
+                                    'name' => self::humanizeString(basename($entry, '.php')),
+                            ];
                         }
                     }
                 }
             }
         }
-
-		ddd($templates);
 
         return $templates;
     }
@@ -268,8 +278,8 @@ class emailgenerator extends Module
 
     public function generateEmail($template, $languageCode)
     {
-        if (!preg_match('#^templates/(core/[^/]+|modules/[^\./]+/[^/]+)$#', $template)) {
-            throw new Exception('NAH, wrong template name.');
+        if (!$this->isValidTemplatePath($template)) {
+            throw new Exception(sprintf('Invalid template path: %1$s.', $template));
         }
 
         @ini_set('display_errors', 'on');
@@ -296,8 +306,9 @@ class emailgenerator extends Module
             $emailDefaultFont = (self::$_lang_default_font[$languageCode]).',';
         }
 
-        if (dirname($template) !== 'templates/core') {
-            set_include_path(dirname(__FILE__).'/templates/core:'.get_include_path());
+        // Todo: allow overriding the header and footer?
+        if (basename(dirname($template)) !== 'core' || basename(dirname(dirname($template))) !== 'common') {
+            set_include_path(dirname(__FILE__).'/templates/versions/common/core:'.get_include_path());
         }
 
         ob_start();
@@ -519,16 +530,16 @@ class emailgenerator extends Module
 
     public function isValidTemplatePath($template)
     {
-        return preg_match('#^templates/(?:core|modules/[^/]+)/[^/]+\.php$#', $template)
+        return preg_match('#^templates/versions/(?:common|\d+(?:\.\d+){3})/(?:core|modules/\w+)/[^/]+\.php$#', $template)
             && file_exists(dirname(__FILE__).'/'.$template);
     }
 
     public function getBaseOutputName($template, $languageCode)
     {
         $m = array();
-        if (preg_match('#^templates/core/[^/]+\.php$#', $template)) {
+        if (preg_match('#^templates/versions/[^/]+/core/[^/]+\.php$#', $template)) {
             return _PS_ROOT_DIR_.'/mails/'.$languageCode.'/'.basename($template, '.php');
-        } elseif (preg_match('#^templates/modules/([^/]+)/(?:[^/]+)\.php$#', $template, $m)) {
+        } elseif (preg_match('#^templates/versions/[^/]+/modules/([^/]+)/(?:[^/]+)\.php$#', $template, $m)) {
             return _PS_MODULE_DIR_.$m[1].'/mails/'.$languageCode.'/'.basename($template, '.php');
         } else {
             return false;

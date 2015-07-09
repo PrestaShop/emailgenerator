@@ -126,7 +126,9 @@ class AdminEmailGeneratorController extends ModuleAdminController
                 'languageCode' => $languageCode,
                 'error' => $error,
             ));
-        }
+        } else {
+			throw new Exception(sprintf('Not a valid template path: %1$s.', $template));
+		}
     }
 
     public function processPreview()
