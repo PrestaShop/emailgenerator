@@ -175,6 +175,9 @@ $_LANGMAIL[', with an amount of'] = ', with an amount of';
 $_LANGMAIL['Hi {name},'] = 'Hi {name},';
 $_LANGMAIL['{customer} has sent you a link to a product that (s)he thinks may interest you.'] = '{customer} has sent you a link to a product that (s)he thinks may interest you.';
 $_LANGMAIL['Click here to view this item:'] = 'Click here to view this item:';
+$_LANGMAIL['You have received a new return request for {shop_name}.'] = 'You have received a new return request for {shop_name}.';
+$_LANGMAIL['Return details'] = 'Return details';
+$_LANGMAIL['{order_name} Placed on {date}'] = '{order_name} Placed on {date}';
 
 
 return $_LANGMAIL;
