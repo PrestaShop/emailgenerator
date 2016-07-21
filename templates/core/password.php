@@ -21,8 +21,7 @@
 							<?php echo t('Your new {shop_name} login details'); ?>
 						</p>
 						<span>
-							<span><strong><?php echo t('E-mail address:'); ?></strong></span> {email}<br/>
-							<span><strong><?php echo t('Password:'); ?></strong></span> {passwd}
+							<span><strong><?php echo t('E-mail address:'); ?></strong></span> {email}
 						</span>
 					</font>
 				</td>
