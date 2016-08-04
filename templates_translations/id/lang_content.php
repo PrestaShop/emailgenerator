@@ -50,7 +50,7 @@ $_LANGMAIL['You can review this credit slip and download your invoice from the <
 $_LANGMAIL['Thank you for your order with the reference {order_name} from <strong>{shop_name}</strong>'] = 'Terima kasih atas pembelian Anda dengan kode referensi  {order_name} di <strong>{shop_name}</strong>';
 $_LANGMAIL['Product(s) now available for download'] = 'Produk telah tersedia untuk diunduh';
 $_LANGMAIL['You have <span><strong>{nbProducts}</strong></span> product(s) now available for download using the following link(s):'] = 'Anda memiliki <span><strong>{nbProducts}</strong></span> produk yang tersedia dan dapat diunduh menggunakan tautan sebagai berikut:';
-$_LANGMAIL['If you have a guest account, you can follow your order via the <a href="{guest_tracking_url}?id_order={order_name}">"Guest Tracking"</a> section on our shop.'] = 'Jika Anda menggunakan guest account, Anda dapat memantau pembelian Anda melalui halaman <a href="{guest_tracking_url}?id_order={order_name}">"Guest Tracking"</a>.';
+$_LANGMAIL['If you have a guest account, you can follow your order via the <a href="{guest_tracking_url}">"Guest Tracking"</a> section on our shop.'] = 'Jika Anda menggunakan guest account, Anda dapat memantau pembelian Anda melalui halaman <a href="{guest_tracking_url}">"Guest Tracking"</a>.';
 $_LANGMAIL['Your {shop_name} login information'] = 'Informasi login Anda di {shop_name}';
 $_LANGMAIL['Here is your personal login information for <span><strong>{shop_name}</strong></span>:'] = 'Berikut adalah informasi login Anda di <span><strong>{shop_name}</strong></span>:';
 $_LANGMAIL['First name:'] = 'Nama depan:';
