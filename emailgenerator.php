@@ -37,6 +37,7 @@ class EmailGenerator extends Module
 
 		$this->displayName = 'Email Generator';
 		$this->description = 'Generate HTML and TXT emails for PrestaShop from php templates.';
+        $this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.99.99');
 
 		parent::__construct();
 	}
