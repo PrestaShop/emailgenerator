@@ -22,7 +22,8 @@
 						</p>
 						<span>
 							<?php echo t('Your guest account for <span><strong>{shop_name}</strong></span> has been transformed into a customer account.'); ?> <br /><br />
-							<span><strong><?php echo t('E-mail address:'); ?></strong></span> {email}
+							<span><strong><?php echo t('E-mail address:'); ?></strong></span> {email}<br /><br />
+							<span><strong><?php echo t('Password:'); ?></strong></span> {passwd}
 						</span>
 					</font>
 				</td>

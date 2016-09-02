@@ -178,8 +178,6 @@ $_LANGMAIL['Click here to view this item:'] = 'Click here to view this item:';
 $_LANGMAIL['You have received a new return request for {shop_name}.'] = 'You have received a new return request for {shop_name}.';
 $_LANGMAIL['Return details'] = 'Return details';
 $_LANGMAIL['{order_name} Placed on {date}'] = '{order_name} Placed on {date}';
-$_LANGMAIL['Import complete'] = 'Import complete';
-$_LANGMAIL['The file {filename} has been successfully imported to your shop.'] = 'The file {filename} has been successfully imported to your shop.';
 
 
 return $_LANGMAIL;
