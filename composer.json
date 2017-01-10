@@ -1,0 +1,12 @@
+{
+    "name": "prestashop/emailgenerator",
+    "description": "Generate translated email template for PrestaShop 1.6 language pack",
+    "type": "library",
+    "authors": [
+        {
+            "name": "PrestaShop SA",
+            "email": "contact@prestashop.com"
+        }
+    ],
+    "require": {}
+}
