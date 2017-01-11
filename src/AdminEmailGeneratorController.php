@@ -1,6 +1,8 @@
 <?php
 
-class AdminEmailGeneratorController extends ModuleAdminController
+namespace PrestaShop\EmailGenerator;
+
+class AdminEmailGeneratorController
 {
 	public function __construct()
 	{
@@ -55,13 +57,13 @@ class AdminEmailGeneratorController extends ModuleAdminController
 			if ($lang['iso_code'] === 'an')
 				continue;
 
-			foreach ($templates['core'] as $tpl) 
+			foreach ($templates['core'] as $tpl)
 				if(!preg_match('/^header/', basename($tpl['path'])) && !preg_match('/^footer/', basename($tpl['path'])))
 					$toBuild[] = array(
 						'languageCode' => $lang['iso_code'],
 						'template' => $tpl['path']
 					);
-			foreach ($templates['modules'] as $mod) 
+			foreach ($templates['modules'] as $mod)
 				foreach ($mod as $tpl)
 					$toBuild[] = array(
 						'languageCode' => $lang['iso_code'],
@@ -159,8 +161,8 @@ class AdminEmailGeneratorController extends ModuleAdminController
 		catch (Exception $e)
 		{
 			$res['error_message'] = $e->getMessage();
-		}	
+		}
 
-		die(Tools::jsonEncode($res)); 
+		die(Tools::jsonEncode($res));
 	}
 }

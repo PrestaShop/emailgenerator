@@ -1,5 +1,7 @@
 <?php
 
+namespace PrestaShop\EmailGenerator;
+
 if (!defined('_PS_VERSION_'))
 	exit;
 
@@ -20,7 +22,7 @@ function t($str)
 		return $str;
 }
 
-class EmailGenerator extends Module
+class EmailGenerator
 {
 	protected static $_rtl_langs = array('fa', 'ar', 'he', 'ur', 'ug', 'ku');
 	protected static $_lang_default_font = array(
