@@ -30,60 +30,6 @@ class EmailGenerator
 		'ar' => 'Tahoma'
 	);
 
-	public function __construct()
-	{
-		$this->name = 'emailgenerator';
-		$this->version = '0.5';
-		$this->author = 'fmdj';
-		$this->bootstrap = true;
-
-		$this->displayName = 'Email Generator';
-		$this->description = 'Generate HTML and TXT emails for PrestaShop from php templates.';
-        $this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.99.99');
-
-		parent::__construct();
-	}
-
-	public function install()
-	{
-		return parent::install() && $this->installTab();
-	}
-
-	public function uninstall()
-	{
-		return $this->uninstallTab() && parent::uninstall();
-	}
-
-	public function installTab()
-	{
-		$tab = new Tab();
-		$tab->active = 1;
-		$tab->class_name = "AdminEmailGenerator";
-		$tab->name = array();
-		foreach (Language::getLanguages(true) as $lang)
-			$tab->name[$lang['id_lang']] = "AdminEmailGenerator";
-		$tab->id_parent = -1;
-		$tab->module = $this->name;
-		return $tab->add();
-	}
-
-	public function uninstallTab()
-	{
-		$id_tab = (int)Tab::getIdFromClassName('AdminEmailGenerator');
-		if ($id_tab)
-		{
-			$tab = new Tab($id_tab);
-			return $tab->delete();
-		}
-		else
-			return false;
-	}
-
-	public function getContent()
-	{
-		Tools::redirectAdmin($this->context->link->getAdminLink('AdminEmailGenerator'));
-	}
-
 	public static function humanizeString($str)
 	{
 		return implode(' ', array_map('ucfirst',  preg_split('/[_\-]/', $str)));

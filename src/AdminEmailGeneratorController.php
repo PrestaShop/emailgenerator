@@ -8,31 +8,8 @@ class AdminEmailGeneratorController
 	{
 		$this->bootstrap = true;
 
-		$this->template = 'index.tpl';
-
-		if ($action = Tools::getValue('action'))
-		{
-			$action = basename($action);
-		}
-		else
-		{
-			$action = 'index';
-		}
-
-		$this->action = $action;
+		$this->action = 'index';
 		$this->template = $action.'.tpl';
-
-		parent::__construct();
-		if (!$this->module->active)
-			Tools::redirectAdmin($this->context->link->getAdminLink('AdminHome'));
-
-		$this->context->smarty->assign('emailgenerator', $this->context->link->getAdminLink('AdminEmailGenerator'));
-	}
-
-	public function setMedia()
-	{
-		$this->addCSS(_PS_MODULE_DIR_.'emailgenerator/css/emailgenerator.css');
-		parent::setMedia();
 	}
 
 	public function processIndex()
@@ -74,7 +51,7 @@ class AdminEmailGeneratorController
 		$params = array(
 			'templates' => $templates,
 			'languages' => $languages,
-			'toBuild' => Tools::jsonEncode($toBuild)
+			'toBuild' => json_encode($toBuild)
 		);
 		$this->context->smarty->assign($params);
 	}
@@ -163,6 +140,6 @@ class AdminEmailGeneratorController
 			$res['error_message'] = $e->getMessage();
 		}
 
-		die(Tools::jsonEncode($res));
+		die(json_encode($res));
 	}
 }
