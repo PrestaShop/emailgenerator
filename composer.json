@@ -8,5 +8,10 @@
             "email": "contact@prestashop.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "PrestaShop\\EmailGenerator\\": ""
+        }
+    },
     "require": {}
 }
