@@ -205,7 +205,7 @@ class EmailGenerator
             return file_get_contents($path);
     }
 
-    private function generateEmail($template, $languageCode)
+    private function generateEmail($template, $targetPath, $languageCode)
     {
         if (!preg_match('#^templates/(core/[^/]+|modules/[^\./]+/[^/]+)$#', $template)) {
             throw new Exception('NAH, wrong template name.');
@@ -220,13 +220,14 @@ class EmailGenerator
         }
 
         global $EMAIL_TRANSLATIONS_DICTIONARY;
-        $dictionary_path = dirname(__FILE__).'/templates_translations/'.$languageCode.'/lang_content.php';
+        $dictionary_path = $this->paths['root'].'/translations/'.$languageCode.'/lang_content.php';
         if (file_exists($dictionary_path)) {
             $EMAIL_TRANSLATIONS_DICTIONARY = include $dictionary_path;
         } else {
             $EMAIL_TRANSLATIONS_DICTIONARY = array();
         }
 
+        $emailPublicWebRoot = $this->paths['root'].'/templates/';
         $emailLangIsRTL = in_array($languageCode, self::$_rtl_langs); // see header.php
         $emailDefaultFont = '';
         if (array_key_exists($languageCode, self::$_lang_default_font)) {
@@ -306,7 +307,7 @@ class EmailGenerator
 
     private function getBodyTranslations($languageCode)
     {
-        $path = dirname(__FILE__).'/templates_translations/'.$languageCode.'/lang_content.php';
+        $path = $this->paths['root'].'/translations/'.$languageCode.'/lang_content.php';
 
         return $this->getTranslations($path);
     }
@@ -359,9 +360,9 @@ class EmailGenerator
     {
         $m = array();
         if (preg_match('#^templates/core/[^/]+\.php$#', $template)) {
-            return _PS_ROOT_DIR_.'/mails/'.$languageCode.'/'.basename($template, '.php');
+            return $this->paths['target'].'/mails/'.$languageCode.'/'.basename($template, '.php');
         } elseif (preg_match('#^templates/modules/([^/]+)/(?:[^/]+)\.php$#', $template, $m)) {
-            return _PS_MODULE_DIR_.$m[1].'/mails/'.$languageCode.'/'.basename($template, '.php');
+            return $this->paths['target'].'/'.$m[1].'/mails/'.$languageCode.'/'.basename($template, '.php');
         } else {
             return false;
         }
@@ -373,7 +374,7 @@ class EmailGenerator
         $path = substr($absPath, strlen(_PS_ROOT_DIR_) + 1);
 
         return
-            preg_match('#^(?:mails/[a-z]{2}/lang\.php|modules/emailgenerator/templates_translations/[a-z]{2}/lang_content\.php)$#', $path)
+            preg_match('#^(?:mails/[a-z]{2}/lang\.php|modules/emailgenerator/translations/[a-z]{2}/lang_content\.php)$#', $path)
             ? $absPath
             : false;
     }
