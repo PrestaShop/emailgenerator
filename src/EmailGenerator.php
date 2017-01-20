@@ -280,15 +280,6 @@ class EmailGenerator
         return array('html' => $html, 'text' => $text);
     }
 
-//    private function currentLanguageCode()
-//    {
-//        if (($languageCode = Tools::getValue('languageCode')) && preg_match('/[a-z]{2}/', $languageCode)) {
-//            return $languageCode;
-//        } else {
-//            return $this->context->language->iso_code;
-//        }
-//    }
-
     private function getTranslations($path)
     {
         if (file_exists($path)) {
@@ -305,55 +296,9 @@ class EmailGenerator
         }
     }
 
-    private function getBodyTranslations($languageCode)
-    {
-        $path = $this->paths['root'].'/translations/'.$languageCode.'/lang_content.php';
-
-        return $this->getTranslations($path);
-    }
-
-    private function getSubjectTranslations($languageCode)
-    {
-        $path = _PS_MAIL_DIR_.$languageCode.'/lang.php';
-
-        return $this->getTranslations($path);
-    }
-
     private static function unquote($string)
     {
         return preg_replace(array('/(?:^[\'"]|[\'"]$)/', '/\\\+([\'"])/'), array('', '\1'), $string);
-    }
-
-    private static function recListPSPHPFiles($dir)
-    {
-        foreach (array(_PS_CACHE_DIR_, _PS_TOOL_DIR_) as $skip) {
-            if (preg_replace('#/$#', '', $skip) === preg_replace('#/$#', '', $dir)) {
-                return array();
-            }
-        }
-
-        $paths = array();
-
-        if (is_dir($dir)) {
-            foreach (scandir($dir) as $entry) {
-                if (!preg_match('/^\./', basename($entry))) {
-                    $path = $dir.'/'.$entry;
-                    if (is_dir($path)) {
-                        $paths = array_merge($paths, self::recListPSPHPFiles($path));
-                    } elseif (preg_match('/\.php$/', $entry)) {
-                        $paths[] = $path;
-                    }
-                }
-            }
-        }
-
-        return $paths;
-    }
-
-    private function isValidTemplatePath($template)
-    {
-        return preg_match('#^templates/(?:core|modules/[^/]+)/[^/]+\.php$#', $template)
-            && file_exists($this->paths['root'].'/'.$template);
     }
 
     private function getBaseOutputName($template, $languageCode)
@@ -366,16 +311,5 @@ class EmailGenerator
         } else {
             return false;
         }
-    }
-
-    private function isValidTranslationFilePath($path)
-    {
-        $absPath = _PS_ROOT_DIR_.'/'.$path;
-        $path = substr($absPath, strlen(_PS_ROOT_DIR_) + 1);
-
-        return
-            preg_match('#^(?:mails/[a-z]{2}/lang\.php|modules/emailgenerator/translations/[a-z]{2}/lang_content\.php)$#', $path)
-            ? $absPath
-            : false;
     }
 }
