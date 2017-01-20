@@ -7,17 +7,8 @@ use CSSIN;
 
 global $EMAIL_TRANSLATIONS_DICTIONARY;
 $EMAIL_TRANSLATIONS_DICTIONARY = array();
-// Function to put the translations in the templates
-function t($str)
-{
-    global $EMAIL_TRANSLATIONS_DICTIONARY;
 
-    if (isset($EMAIL_TRANSLATIONS_DICTIONARY[$str]) && trim($EMAIL_TRANSLATIONS_DICTIONARY[$str]) !== '') {
-        return $EMAIL_TRANSLATIONS_DICTIONARY[$str];
-    } else {
-        return $str;
-    }
-}
+require_once 'functions.php';
 
 class EmailGenerator
 {
