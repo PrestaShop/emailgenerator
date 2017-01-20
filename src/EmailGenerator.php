@@ -4,6 +4,7 @@ namespace PrestaShop\EmailGenerator;
 
 use Exception;
 use CSSIN;
+use Html2Text;
 
 global $EMAIL_TRANSLATIONS_DICTIONARY;
 $EMAIL_TRANSLATIONS_DICTIONARY = array();
@@ -29,6 +30,7 @@ class EmailGenerator
         ];
 
         require_once $this->paths['root'].'/vendor/cssin/cssin.php';
+        require_once $this->paths['root'].'/vendor/html_to_text/Html2Text.php';
 
         $this->isoCodes = ['en', 'fr'];
     }
