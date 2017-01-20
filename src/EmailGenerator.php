@@ -24,6 +24,9 @@ function t($str)
 
 class EmailGenerator
 {
+    protected $paths;
+    protected $isoCodes;
+
 	protected static $_rtl_langs = array('fa', 'ar', 'he', 'ur', 'ug', 'ku');
 	protected static $_lang_default_font = array(
 		'fa' => 'Tahoma',
@@ -31,6 +34,18 @@ class EmailGenerator
 	);
 
 	public static function humanizeString($str)
+    public function __construct($emailTargetPath)
+    {
+        $this->paths = [
+            'root' => dirname(__DIR__),
+            'target' => $emailTargetPath,
+        ];
+
+        require_once $this->paths['root'].'/vendor/cssin/cssin.php';
+
+        $this->isoCodes = ['en', 'fr'];
+    }
+
 	{
 		return implode(' ', array_map('ucfirst',  preg_split('/[_\-]/', $str)));
 	}
