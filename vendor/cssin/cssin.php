@@ -130,8 +130,8 @@ class CSSIN
 					foreach(explode(",", $selectors) as $selector)
 					{
 						$rules[] = array(
-							'position' 		=> $position, 
-							'specificity' 	=> self::calculateCSSSpecifity($selector), 
+							'position' 		=> $position,
+							'specificity' 	=> self::calculateCSSSpecifity($selector),
 							'selector' 		=> $selector,
 							'properties' 	=> $properties
 						);
@@ -167,7 +167,7 @@ class CSSIN
 	}
 
 	/**
-	 * The following function fomes from CssToInlineStyles.php - here is the original licence FOR THIS FUNCTION 
+	 * The following function fomes from CssToInlineStyles.php - here is the original licence FOR THIS FUNCTION
 	 *
 	 * CSS to Inline Styles class
 	 *
@@ -301,10 +301,10 @@ class CSSIN
 
 		$css_urls = array();
 
-		// Find all stylesheets and determine their absolute URLs to retrieve them 
+		// Find all stylesheets and determine their absolute URLs to retrieve them
 		foreach($html->find('link[rel="stylesheet"]') as $style)
 		{
-			$css_urls[] = self::absolutify($url, $style->href);
+			$css_urls[] = $style->href;
 			$style->outertext = '';
 		}
 
@@ -334,7 +334,7 @@ class CSSIN
 		// This is an array with, amongst other things, the keys 'properties', which hold the CSS properties
 		// and the 'selector', which holds the CSS selector
 		$rules = $this->parseCSS($raw_css);
-		
+
 		// We loop over each rule by increasing order of specificity, find the nodes matching the selector
 		// and apply the CSS properties
 		foreach ($rules as $rule)

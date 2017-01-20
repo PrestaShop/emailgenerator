@@ -197,19 +197,12 @@ class EmailGenerator
         return $txt;
     }
 
-    private function getCSS($url)
+    public function getCSS($path)
     {
-        dump($url); die;
-        $webRoot = Tools::getShopDomain(true).__PS_BASE_URI__;
-        if (strpos($url, $webRoot) === 0) {
-            $path = _PS_ROOT_DIR_.'/'.substr($url, strlen($webRoot));
             if (!file_exists($path)) {
                 throw new Exception('Could not find CSS file: '.$path);
             }
             return file_get_contents($path);
-        } else {
-            throw Exception('Dont\'t know how to get CSS: '.$url);
-        }
     }
 
     private function generateEmail($template, $languageCode)
