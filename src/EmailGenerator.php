@@ -22,7 +22,7 @@ class EmailGenerator
         'ar' => 'Tahoma',
     );
 
-    public function __construct($emailTargetPath)
+    public function __construct($emailTargetPath, array $iso)
     {
         $this->paths = [
             'root' => dirname(__DIR__),
@@ -32,7 +32,7 @@ class EmailGenerator
         require_once $this->paths['root'].'/vendor/cssin/cssin.php';
         require_once $this->paths['root'].'/vendor/html_to_text/Html2Text.php';
 
-        $this->isoCodes = ['en', 'fr'];
+        $this->isoCodes = $iso;
     }
 
     public static function humanizeString($str)
