@@ -11,6 +11,9 @@
     "autoload": {
         "psr-4": {
             "PrestaShop\\EmailGenerator\\": "src/"
+        },
+        "psr-0": {
+            "": "vendor/"
         }
     },
     "require": {}
