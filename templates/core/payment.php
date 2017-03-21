@@ -47,7 +47,7 @@
 	<td class="linkbelow">
 		<font size="2" face="<?php echo $emailDefaultFont ?>Open-sans, sans-serif" color="#555454">
 			<span>
-				<?php echo t('If you have a guest account, you can follow your order via the <a href="{guest_tracking_url}?id_order={order_name}">"Guest Tracking"</a> section on our shop.'); ?>
+				<?php echo t('If you have a guest account, you can follow your order via the <a href="{guest_tracking_url}?order_reference={order_name}">"Guest Tracking"</a> section on our shop.'); ?>
 			</span>
 		</font>
 	</td>

@@ -50,7 +50,7 @@ $_LANGMAIL['You can review this credit slip and download your invoice from the <
 $_LANGMAIL['Thank you for your order with the reference {order_name} from <strong>{shop_name}</strong>'] = 'Merci pour votre commande portant la référence {order_name} sur <strong>{shop_name}</strong>';
 $_LANGMAIL['Product(s) now available for download'] = 'Produit(s) à télécharger';
 $_LANGMAIL['You have <span><strong>{nbProducts}</strong></span> product(s) now available for download using the following link(s):'] = 'Vous avez <span><strong>{nbProducts}</span></strong> produit(s) à télécharger.';
-$_LANGMAIL['If you have a guest account, you can follow your order via the <a href="{guest_tracking_url}?id_order={order_name}">"Guest Tracking"</a> section on our shop.'] = 'Si vous avez un compte invité vous pouvez suivre votre commande via <a href="{guest_tracking_url}">ce lien</a>.';
+$_LANGMAIL['If you have a guest account, you can follow your order via the <a href="{guest_tracking_url}">"Guest Tracking"</a> section on our shop.'] = 'Si vous avez un compte invité vous pouvez suivre votre commande via <a href="{guest_tracking_url}">ce lien</a>.';
 $_LANGMAIL['Your {shop_name} login information'] = 'Voici vos informations personnelles pour {shop_name}';
 $_LANGMAIL['Here is your personal login information for <span><strong>{shop_name}</strong></span>:'] = 'Voici vos informations d\'identification sur <span><strong>{shop_name}</strong></span> :';
 $_LANGMAIL['First name:'] = 'Prénom :';
